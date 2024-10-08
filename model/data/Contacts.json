@@ -1,0 +1,19 @@
+{
+    "fullName": "John Doe",
+    "phoneNumbers": {
+      "personal": "+123456789",
+      "work": "+987654321"
+    },
+    "address": {
+      "country": "USA",
+      "city": "New York",
+      "houseNumber": "100",
+      "postalCode": "10001"
+    },
+    "dateOfBirth": "1990-01-01",
+      "emails": {
+      "personal": "johndoe@example.com",
+      "work": "john.doe@company.com"
+    }
+}
+  

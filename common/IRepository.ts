@@ -1,23 +1,31 @@
-export interface IRepository<T> {
-    /// <summary>
-    /// Create a new object of type T
-    /// </summary>
-    /// <param name="pattern">The object to create</param>
-    create(object: T): void;
-    /// <summary>
-    /// Read all objects of type T
-    /// </summary>
-    /// <returns>All objects of type T</returns>
-    read(): T[];
-    /// <summary>
-    /// Update an object of type T
-    /// </summary>
-    /// <param name="index">The index of the object to update</param>
-    /// <param name="newObject">The updated object</param>
-    update(index: number, newObject: T): void;
-    /// <summary>
-    /// Delete an object of type T
-    /// </summary>
-    /// <param name="index">The index of the object to delete</param>
-    delete(index: number): void;
+interface Phone {
+    type: string;
+    number: string;
+}
+
+interface Email {
+    type: string;
+    address: string;
+}
+
+interface Contact {
+    id: number;
+    name: string;
+    age: number;
+    city: string;
+    phones: Phone[];
+    emails: Email[];
+}
+interface IContactRepository {
+    getAll(): Contact[];
+    getById(id: number): Contact | undefined;
+    add(contact: Contact): void;
+    update(contact: Contact): void;
+    delete(id: number): void;
+
+    // Методы поиска
+    findByPhoneNumber(phoneNumber: string): Contact | undefined;
+    findByFullName(name: string): Contact | undefined;
+    findByAgeAndCity(age: number, city: string): Contact[];
+    findByEmail(email: string): Contact | undefined;
 }
