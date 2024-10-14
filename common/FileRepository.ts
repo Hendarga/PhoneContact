@@ -3,12 +3,15 @@ import { inherits } from 'util';
 import Repository from './Repository';
 import { IIdentified } from './IIdentified';
 import { IElementUpdate } from './IElementUpdate';
-import { ActionTypes } from './IElementUpdate'; // Assuming ActionTypes is defined in a separate module
+import { ActionTypes } from './IElementUpdate';
 
 export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, K> {
     private elementUpdater: onElementUpdate<T> | undefined;
+    
+    /// Bind the element updater to the repository
     public readonly loadFromFile:any;
     public readonly flush:any;
+    public readonly filePath: any;
 
     constructor(filePath: string) {
         super();
@@ -19,17 +22,12 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
 
         // Load items from file and initialize the elements updater
         this.elementUpdater = new onElementUpdate(filePath);
+        this.onElementUpdate = this.elementUpdater;
+        this.filePath = this.filePath.bind(this.elementUpdater);
         this.loadFromFile =  this.elementUpdater.loadFromFile.bind(this.elementUpdater);
         this.flush =  this.elementUpdater.flush.bind(this.elementUpdater);
         
         this.items.push(...this.loadFromFile());
-        this.onElementUpdate = this.elementUpdater;
-    }
-
-    getFilePath(): string|undefined {
-        if (this.elementUpdater) {
-            return this.elementUpdater.filePath;
-        }
     }
 }
 

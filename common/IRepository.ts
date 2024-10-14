@@ -25,20 +25,20 @@ export interface IRepository<T extends IIdentified<K>,K> {
      * 
      * @param item - The item to add.
      */
-    create(item: T): void;
+    create(item: T): number;
 
     /**
      * Updates an existing item in the repository.
      * 
      * @param item - The item with updated information.
      */
-    update(item: T): void;
+    update(item: T): number;
 
     /**
      * Deletes an item from the repository by its unique identifier.
      * 
      * @param id - The unique identifier of the item to delete.
      */
-    delete(id: K): void;
+    delete(id: K): number;
 }
 

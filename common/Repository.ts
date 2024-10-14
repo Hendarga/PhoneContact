@@ -3,6 +3,7 @@ import { emitKeypressEvents } from "readline";
 import { IIdentified } from "./IIdentified";
 import {IRepository} from "./IRepository";
 import { IElementUpdate } from "./IElementUpdate"; // Add this line to import IElemetUpdate
+import { IEquatable } from "./IEquatable";
 
 
 /**
@@ -32,7 +33,7 @@ export default class Repository<T extends IIdentified<K>,K> implements IReposito
         return this.items.find(item => item.id === id);
     }
 
-    create(element: T): void {
+    create(element: T): number {
         const index = this.items.findIndex(item => item.id === element.id);
         if(index < 0)
             this.items.push(element);
@@ -41,26 +42,33 @@ export default class Repository<T extends IIdentified<K>,K> implements IReposito
         
         if(this.onElementUpdate)    
             this.onElementUpdate.onUpdate(element, 'CREATE');
+
+        return index
     }
 
-    read(): T[] {
+    read(selector : IEquatable<T>): T[] {
+        this.items = this.items.filter(selector.equals);
         return this.items;
     }
 
-    update(element: T): void {
+    update(element: T): number {
         const index = this.items.findIndex(item => item.id === element.id);
         if(index > -1)
             this.items[index] = element;
         if(this.onElementUpdate)    
             this.onElementUpdate.onUpdate(element, 'UPDATE');
+
+        return index;
     }
 
-    delete(id: K): void {
+    delete(id: K): number {
         const index = this.items.findIndex(item => item.id === id);
         if(index > -1)
             this.items.splice(index, 1);
 
         if(this.onElementUpdate)
             this.onElementUpdate.onUpdate(this.items[index], 'DELETE');
+
+        return index;
     }
 }
