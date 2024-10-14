@@ -1,106 +1,70 @@
 import fs, { readFileSync, writeFileSync } from 'fs';
+import { inherits } from 'util';
+import Repository from './Repository';
+import { IIdentified } from './IIdentified';
+import { IElementUpdate } from './IElementUpdate';
+import { ActionTypes } from './IElementUpdate'; // Assuming ActionTypes is defined in a separate module
 
-class ContactRepository implements IContactRepository {
-    private contacts: Contact[] = [];
-    private filePath: string;
+export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, K> {
+    private elementUpdater: onElementUpdate<T> | undefined;
+    public readonly loadFromFile:any;
+    public readonly flush:any;
 
     constructor(filePath: string) {
-        this.filePath = filePath;
-        this.loadContactsFromFile();
-    }
-
-    getAll(): Contact[] {
-        return this.contacts;
-    }
-
-    getById(id: number): Contact | undefined {
-        return this.contacts.find(contact => contact.id === id);
-    }
-
-    add(contact: Contact): void {
-        this.contacts.push(contact);
-        this.saveContactsToFile();
-    }
-
-    update(contact: Contact): void {
-        const index = this.contacts.findIndex(c => c.id === contact.id);
-        if (index !== -1) {
-            this.contacts[index] = contact;
-            this.saveContactsToFile();
+        super();
+        // Check if file exists
+        if(!fs.existsSync(filePath)) {
+            throw new Error(`File ${filePath} does not exist`); 
         }
+
+        // Load items from file and initialize the elements updater
+        this.elementUpdater = new onElementUpdate(filePath);
+        this.loadFromFile =  this.elementUpdater.loadFromFile.bind(this.elementUpdater);
+        this.flush =  this.elementUpdater.flush.bind(this.elementUpdater);
+        
+        this.items.push(...this.loadFromFile());
+        this.onElementUpdate = this.elementUpdater;
     }
 
-    delete(id: number): void {
-        this.contacts = this.contacts.filter(contact => contact.id !== id);
-        this.saveContactsToFile();
-    }
-
-    private saveContactsToFile(): void {
-        fs.writeFileSync(this.filePath, JSON.stringify(this.contacts, null, 2), 'utf-8');
-    }
-
-    private loadContactsFromFile(): void {
-        if (fs.existsSync(this.filePath)) {
-            const data = fs.readFileSync(this.filePath, 'utf-8');
-            this.contacts = JSON.parse(data);
+    getFilePath(): string|undefined {
+        if (this.elementUpdater) {
+            return this.elementUpdater.filePath;
         }
-    }
-
-    getFilePath(): string {
-        return this.filePath;
-    }
-
-    // Поиск по номеру телефона
-    findByPhoneNumber(phoneNumber: string): Contact | undefined {
-        return this.contacts.find(contact =>
-            contact.phones.some(phone => phone.number === phoneNumber)
-        );
-    }
-
-    // Поиск по полному имени
-    findByFullName(name: string): Contact | undefined {
-        return this.contacts.find(contact => contact.name === name);
-    }
-
-    // Поиск по возрасту и городу
-    findByAgeAndCity(age: number, city: string): Contact[] {
-        return this.contacts.filter(contact => contact.age === age && contact.city === city);
-    }
-
-    // Поиск по email
-    findByEmail(email: string): Contact | undefined {
-        return this.contacts.find(contact =>
-            contact.emails.some(mail => mail.address === email)
-        );
     }
 }
-const filePath = './contacts.json';
-const repository = new ContactRepository(filePath);
 
-// Добавление нового контакта
-repository.add({
-    id: 1,
-    name: "John Doe",
-    age: 30,
-    city: "New York",
-    phones: [
-        { type: "mobile", number: "+1234567890" },
-        { type: "home", number: "+0987654321" }
-    ],
-    emails: [
-        { type: "work", address: "john@example.com" },
-        { type: "personal", address: "doe@example.com" }
-    ]
-});
+/// <reference path="IElementUpdate.ts" />
+class onElementUpdate<T>  implements IElementUpdate<T> {
+    public readonly filePath: string;
+    /**
+     *
+     */
+    constructor(filePath: string) {
+        this.filePath = filePath;
+    }
 
-// Поиск по номеру телефона
-console.log("Поиск по номеру телефона:", repository.findByPhoneNumber("+1234567890"));
+    onUpdate(element: T, action: ActionTypes): void {
+    switch (action){
+        case 'CREATE':
+        case 'UPDATE':
+        case 'DELETE':
+            ///TODO: add flush call if needed sync with file every action
+            break;
+        default:
+            break;
+    }
 
-// Поиск по полному имени
-console.log("Поиск по полному имени:", repository.findByFullName("John Doe"));
+    }
 
-// Поиск по возрасту и городу
-console.log("Поиск по возрасту и городу:", repository.findByAgeAndCity(30, "New York"));
+    flush(items: T[]): void {
+        fs.writeFileSync(this.filePath, JSON.stringify(items, null, 2), 'utf-8');
+    }
 
-// Поиск по email
-console.log("Поиск по email:", repository.findByEmail("john@example.com"));
+    loadFromFile(): T[] {
+        if (fs.existsSync(this.filePath)) {
+            const data = fs.readFileSync(this.filePath, 'utf-8');
+            return JSON.parse(data);
+        }
+        return new Array(0);
+    }
+}
