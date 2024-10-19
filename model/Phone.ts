@@ -1,4 +1,5 @@
 export interface Phone {
-    type: string;
     number: string;
-}
+    type: 'Mobile' | 'Work' | 'Home' | 'Other';
+  }
+  

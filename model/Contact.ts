@@ -1,6 +1,6 @@
 import { IIdentified } from "../common/IIdentified";
 import { Phone } from "../model/Phone";
-import { Email } from "../model/email";
+import { Email } from "../model/Email";
 /**
  * Represents a contact with personal information and communication details.
  * 
