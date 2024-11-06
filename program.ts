@@ -1,6 +1,7 @@
 import {  } from "./model/.exports";
 import * as common from "./common/.exports";
-
+import { ContactBook } from "./bll/ContactBook";
+import { Contact } from "./model/Contact";
 
 class Program {
 
@@ -9,9 +10,7 @@ class Program {
     }
 
     public Run(): void {
-        let message: string = "Hello World!";
-        console.log(message);
-
+    console.log("Hello World")
     }
 
     public Configure(config:string): Program {
