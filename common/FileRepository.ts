@@ -12,23 +12,28 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
     public readonly loadFromFile:any;
     public readonly flush:any;
     public readonly filePath: any;
-
+   public Save(){
+    this.flush(this.items)
+   }
     constructor(filePath: string) {
-        super();
         // Check if file exists
         if(!fs.existsSync(filePath)) {
-            throw new Error(`File ${filePath} does not exist`); 
+            fs.writeFileSync(filePath, '[]', 'utf-8');
+            //throw new Error(File ${filePath} does not exist); 
         }
-
+        
+        super(0);
+        this.filePath = filePath;
         // Load items from file and initialize the elements updater
         this.elementUpdater = new onElementUpdate(filePath);
         this.onElementUpdate = this.elementUpdater;
-        this.filePath = this.filePath.bind(this.elementUpdater);
+        //this.filePath = this.filePath.bind(this.elementUpdater);
         this.loadFromFile =  this.elementUpdater.loadFromFile.bind(this.elementUpdater);
         this.flush =  this.elementUpdater.flush.bind(this.elementUpdater);
         
         this.items.push(...this.loadFromFile());
     }
+    
 }
 
 /// <reference path="IElementUpdate.ts" />
@@ -46,6 +51,7 @@ class onElementUpdate<T>  implements IElementUpdate<T> {
         case 'CREATE':
         case 'UPDATE':
         case 'DELETE':
+        
             ///TODO: add flush call if needed sync with file every action
             break;
         default:

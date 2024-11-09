@@ -2,7 +2,15 @@ import {  } from "./model/.exports";
 import * as common from "./common/.exports";
 import { ContactBook } from "./bll/ContactBook";
 import { Contact } from "./model/Contact";
-
+import { FileRepository } from "./common/FileRepository";
+import { IIdentified } from "./common/IIdentified";
+import { Student} from "./model/Student"
+import { stdin } from "process";
+interface Person extends IIdentified<number> {
+    name: string;
+    age: number;
+  }
+  
 class Program {
 
     constructor(public args: string[]) {
@@ -10,7 +18,37 @@ class Program {
     }
 
     public Run(): void {
-    console.log("Hello World")
+        const contactBook = new ContactBook();
+
+// Добавление контактов
+contactBook.addContact({ id: 1,  phoneNumber: '123-456-7890', email: 'john@example.com' });
+contactBook.addContact({ id: 2,  phoneNumber: '987-654-3210', email: 'jane@example.com' });
+
+// Получение всех контактов
+const allContacts = contactBook.getContacts();
+console.log(allContacts);
+
+        const student:Student={
+            id: 1,
+            fullName: "Marat",
+            age: 14,
+            courses: ["Art"],
+            gpa: 83,
+            contactInfo: {
+                email: "marat.mkfer@gmail.com",
+                phone: "05314395991"
+            },
+            address: {
+                country: "Turkey",
+                city: "Alanya",
+                postalCode: "071400"
+            }
+
+        };
+        const students:FileRepository<Student,number>=new FileRepository<Student,number>("./model/data/Student.json");
+        students.create(student);
+        students.Save()
+           
     }
 
     public Configure(config:string): Program {

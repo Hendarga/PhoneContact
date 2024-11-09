@@ -1,5 +1,6 @@
-interface Student {
-    studentId: number;
+import { IIdentified } from "../common/IIdentified";
+export interface Student extends IIdentified<number> {
+    
     fullName: string;
     age: number;
     courses: string[];

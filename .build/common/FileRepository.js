@@ -25,20 +25,26 @@ var FileRepository = /** @class */ (function (_super) {
     __extends(FileRepository, _super);
     function FileRepository(filePath) {
         var _a;
-        var _this = _super.call(this) || this;
+        var _this = this;
         // Check if file exists
         if (!fs_1.default.existsSync(filePath)) {
-            throw new Error("File ".concat(filePath, " does not exist"));
+            fs_1.default.writeFileSync(filePath, '[]', 'utf-8');
+            //throw new Error(File ${filePath} does not exist); 
         }
+        _this = _super.call(this, 0) || this;
+        _this.filePath = filePath;
         // Load items from file and initialize the elements updater
         _this.elementUpdater = new onElementUpdate(filePath);
         _this.onElementUpdate = _this.elementUpdater;
-        _this.filePath = _this.filePath.bind(_this.elementUpdater);
+        //this.filePath = this.filePath.bind(this.elementUpdater);
         _this.loadFromFile = _this.elementUpdater.loadFromFile.bind(_this.elementUpdater);
         _this.flush = _this.elementUpdater.flush.bind(_this.elementUpdater);
         (_a = _this.items).push.apply(_a, _this.loadFromFile());
         return _this;
     }
+    FileRepository.prototype.Save = function () {
+        this.flush(this.items);
+    };
     return FileRepository;
 }(Repository_1.default));
 exports.FileRepository = FileRepository;
