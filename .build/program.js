@@ -1,11 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ContactBook_1 = require("./bll/ContactBook");
 var FileRepository_1 = require("./common/FileRepository");
 var Program = /** @class */ (function () {
     function Program(args) {
         this.args = args;
     }
     Program.prototype.Run = function () {
+        var contactBook = new ContactBook_1.ContactBook();
+        var contact = ({
+            id: 2,
+            name: "John Doe",
+            age: 30,
+            city: "New York",
+            phones: [{
+                    number: "1234567890",
+                    type: "Mobile"
+                }],
+            emails: [{
+                    address: "john.doe@example.com",
+                    type: "Home"
+                }]
+        });
+        contactBook.addContact(contact);
+        console.log(book.findByPhoneNumber("1234567890"));
+        // Получение всех контактов
+        var allContacts = contactBook.getContacts();
+        console.log(allContacts);
         var student = {
             id: 1,
             fullName: "Marat",
@@ -25,15 +46,6 @@ var Program = /** @class */ (function () {
         var students = new FileRepository_1.FileRepository("./model/data/Student.json");
         students.create(student);
         students.Save();
-        /*    const AllPeoples: Person[] = [
-                { name: 'Alice', age: 25, id:1 },
-                { name: 'Bob', age: 30 ,id:2 },
-                { name: 'Charlie', age: 35 ,id:3 }
-              ];
-              const peopels:FileRepository<Person,number>=new FileRepository<Person,number>("People.Json");
-              peopels.create(AllPeoples[0]);
-              peopels.Save();
-    */
     };
     Program.prototype.Configure = function (config) {
         console.log("Configuring...");

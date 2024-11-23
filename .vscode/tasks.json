@@ -3,14 +3,73 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        {
-			"type": "typescript",
-			"tsconfig": "${workspaceFolder}/tsconfig.json",
-			"problemMatcher": [
-				"$tsc"
-			],
-			"group": "build",
-			"label": "tsc: build - ${workspaceFolder}/tsconfig.json"
+		{
+		  "label": "Build and Copy Assets",
+		  "dependsOn": [
+			"tsc: build - tsconfig.json",
+			"Clean .build/data Folder2",
+			"Build model data folder"
+		  ],
+		  "dependsOrder": "sequence",
+		  "group": {
+			"kind": "build",
+			"isDefault": true
+		  }
+		},
+		{
+		  "type": "typescript",
+		  "label": "tsc: build - tsconfig.json",
+		  "tsconfig": "./tsconfig.json",
+		  "problemMatcher": [
+			"$tsc"
+		  ],
+		  "group": {
+			"kind": "build",
+			"isDefault": false
+		  }
+		},
+		{
+		  "type": "shell",
+		  "label": "Clean .build/data Folder2",
+		  "command": "rm",
+		  "args": [
+			"./.build/data",
+			"-r",
+		  ],
+		  "group": {
+			"kind": "build",
+			"isDefault": false
+		  }
+		},
+		{
+		  "label": "Clean .build/data Folder",
+		  "type": "shell",
+		  "linux": {
+			"command": "rm",
+			"args": [
+			  "./.build/data",
+			  "-r",
+			]
+		  },
+		  "windows": {
+			"command": "rmdir",
+			"args": [
+			  "/s",
+			  "/q",
+			  "./.build/data",
+			]
+		  },
+		  "group": "build"
+		},
+		{
+		  "type": "shell",
+		  "label": "Build model data folder",
+		  "command": "cp",
+		  "args": [
+			"./model/data/",
+			"./.build/data/",
+			"-r",
+		  ],
 		}
-    ]
+	  ]
 }

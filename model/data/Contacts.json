@@ -1,19 +1,94 @@
 {
-    "fullName": "John Doe",
-    "phoneNumbers": {
-      "personal": "+123456789",
-      "work": "+987654321"
-    },
-    "address": {
-      "country": "USA",
-      "city": "New York",
-      "houseNumber": "100",
-      "postalCode": "10001"
-    },
-    "dateOfBirth": "1990-01-01",
+  "contacts": [
+    {
+      "fullName": "John Doe",
+      "phoneNumbers": {
+        "personal": "+123456789",
+        "work": "+987654321"
+      },
+      "address": {
+        "country": "USA",
+        "city": "New York",
+        "houseNumber": "100",
+        "postalCode": "10001"
+      },
+      "dateOfBirth": "1990-01-01",
       "emails": {
-      "personal": "johndoe@example.com",
-      "work": "john.doe@company.com"
+        "personal": "johndoe@example.com",
+        "work": "john.doe@company.com"
+      }
+    },
+    {
+      "fullName": "Jane Smith",
+      "phoneNumbers": {
+        "personal": "+123123123",
+        "work": "+987987987"
+      },
+      "address": {
+        "country": "Canada",
+        "city": "Toronto",
+        "houseNumber": "50A",
+        "postalCode": "M5V 2T6"
+      },
+      "dateOfBirth": "1985-05-15",
+      "emails": {
+        "personal": "jane.smith@example.com",
+        "work": "jane.smith@company.ca"
+      }
+    },
+    {
+      "fullName": "Michael Brown",
+      "phoneNumbers": {
+        "personal": "+5555555555",
+        "work": "+4444444444"
+      },
+      "address": {
+        "country": "United Kingdom",
+        "city": "London",
+        "houseNumber": "221B",
+        "postalCode": "NW1 6XE"
+      },
+      "dateOfBirth": "1978-09-22",
+      "emails": {
+        "personal": "michael.brown@example.co.uk",
+        "work": "michael.brown@business.co.uk"
+      }
+    },
+    {
+      "fullName": "Emily Johnson",
+      "phoneNumbers": {
+        "personal": "+3333333333",
+        "work": "+1111111111"
+      },
+      "address": {
+        "country": "Australia",
+        "city": "Sydney",
+        "houseNumber": "7",
+        "postalCode": "2000"
+      },
+      "dateOfBirth": "1992-03-11",
+      "emails": {
+        "personal": "emily.johnson@example.com",
+        "work": "emily.j@company.au"
+      }
+    },
+    {
+      "fullName": "Carlos Martinez",
+      "phoneNumbers": {
+        "personal": "+6666666666",
+        "work": "+7777777777"
+      },
+      "address": {
+        "country": "Mexico",
+        "city": "Mexico City",
+        "houseNumber": "200",
+        "postalCode": "01020"
+      },
+      "dateOfBirth": "1980-12-10",
+      "emails": {
+        "personal": "carlos.martinez@example.mx",
+        "work": "carlos.m@empresa.com.mx"
+      }
     }
+  ]
 }
-  

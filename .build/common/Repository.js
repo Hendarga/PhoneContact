@@ -21,14 +21,21 @@ var Repository = /** @class */ (function () {
         return this.items.find(function (item) { return item.id === id; });
     };
     Repository.prototype.create = function (element) {
+        if (!element) {
+            throw new Error("Cannot create undefined element");
+        }
+        if (!element.id) {
+            element.id = this.currentId++; // Генерация id, если его нет
+        }
         var index = this.items.findIndex(function (item) { return item.id === element.id; });
-        if (index < 0)
-            this.items.push(element);
-        else
+        if (index >= 0) {
             throw new Error("Element with id ".concat(element.id, " already exists"));
-        if (this.onElementUpdate)
+        }
+        this.items.push(element);
+        if (this.onElementUpdate) {
             this.onElementUpdate.onUpdate(element, 'CREATE');
-        return index;
+        }
+        return this.items.length - 1; // Индекс добавленного элемента
     };
     Repository.prototype.read = function (selector) {
         this.items = this.items.filter(selector.equals);

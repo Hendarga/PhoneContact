@@ -20,13 +20,7 @@ class Program {
     public Run(): void {
         const contactBook = new ContactBook();
 
-// Добавление контактов
-contactBook.addContact({ id: 1,  phoneNumber: '123-456-7890', email: 'john@example.com' });
-contactBook.addContact({ id: 2,  phoneNumber: '987-654-3210', email: 'jane@example.com' });
 
-// Получение всех контактов
-const allContacts = contactBook.getContacts();
-console.log(allContacts);
 
         const student:Student={
             id: 1,
