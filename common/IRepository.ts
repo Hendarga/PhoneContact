@@ -1,17 +1,18 @@
+import { IFindable } from "./IFindable";
 import { IIdentified } from "./IIdentified";
 /**
  * Generic repository interface for managing a collection of items.
  * 
  * @template T - The type of items managed by the repository.
  */
-export interface IRepository<T extends IIdentified<K>,K> {
+export interface IRepository<T extends IIdentified<K>,K>extends IFindable<T>  {
     /**
      * Retrieves all items from the repository.
      * 
      * @returns An array of all items.
      */
     getAll(): T[];
-
+  
     /**
      * Retrieves an item by its unique identifier.
      * 

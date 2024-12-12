@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Алексей Александров",
+    "phones": [
+      {
+        "number": "5555555555",
+        "type": "Mobile"
+      }
+    ],
+    "emails": [
+      {
+        "address": "alexey@example.com",
+        "type": "Work"
+      }
+    ],
+    "age": 35,
+    "city": "Казань"
+  },
+  {
+    "id": 4,
+    "name": "Дмитрий Дмитриев",
+    "phones": [
+      {
+        "number": "6666666666",
+        "type": "Home"
+      }
+    ],
+    "emails": [
+      {
+        "address": "dmitriy@example.com",
+        "type": "Personal"
+      }
+    ],
+    "age": 40,
+    "city": "Новосибирск"
+  }
+]

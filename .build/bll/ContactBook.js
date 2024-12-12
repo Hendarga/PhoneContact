@@ -1,57 +1,46 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactBook = void 0;
-var Repository_1 = __importDefault(require("../common/Repository"));
-var ContactBook = /** @class */ (function (_super) {
-    __extends(ContactBook, _super);
+var FileRepository_1 = require("../common/FileRepository");
+var ContactBook = /** @class */ (function () {
     function ContactBook() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        this.searchSubstring = function (word, substring) {
+            return word.includes(substring);
+        };
+        this.contacts = new FileRepository_1.FileRepository("./.build/data/Contacts.json");
     }
+    ContactBook.prototype.updateContact = function (contact) {
+        this.contacts.update(contact);
+        this.contacts.Save();
+    };
     ContactBook.prototype.addContact = function (contact) {
-        this.create(contact);
+        this.contacts.create(contact);
+        this.contacts.Save();
     };
     ContactBook.prototype.getContacts = function () {
-        return this.getAll();
+        return this.contacts.getAll();
     };
     // Поиск по номеру телефона
     ContactBook.prototype.findByPhoneNumber = function (phoneNumber) {
-        return this.items.find(function (contact) {
+        return this.contacts.find(function (contact) {
             return contact.phones.some(function (phone) { return phone.number === phoneNumber; });
         });
     };
     // Поиск по полному имени
     ContactBook.prototype.findByFullName = function (name) {
-        return this.items.find(function (contact) { return contact.name === name; });
+        return this.contacts.find(function (contact) { return contact.name.toLowerCase().includes(name.toLowerCase()); });
     };
     // Поиск по возрасту и городу
     ContactBook.prototype.findByAgeAndCity = function (age, city) {
-        return this.items.filter(function (contact) { return contact.age === age && contact.city === city; });
+        return this.contacts.filter(function (contact) { return contact.age === age && contact.city === city; });
     };
     // Поиск по email
     ContactBook.prototype.findByEmail = function (email) {
-        return this.items.find(function (contact) {
+        return this.contacts.find(function (contact) {
             return contact.emails.some(function (mail) { return mail.address === email; });
         });
     };
     return ContactBook;
-}(Repository_1.default));
+}());
 exports.ContactBook = ContactBook;
 //# sourceMappingURL=ContactBook.js.map

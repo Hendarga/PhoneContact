@@ -1,51 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContactBook_1 = require("./bll/ContactBook");
-var FileRepository_1 = require("./common/FileRepository");
+var addMockData = false;
 var Program = /** @class */ (function () {
     function Program(args) {
         this.args = args;
     }
     Program.prototype.Run = function () {
         var contactBook = new ContactBook_1.ContactBook();
-        var contact = ({
-            id: 2,
-            name: "John Doe",
-            age: 30,
-            city: "New York",
-            phones: [{
-                    number: "1234567890",
-                    type: "Mobile"
-                }],
-            emails: [{
-                    address: "john.doe@example.com",
-                    type: "Home"
-                }]
-        });
-        contactBook.addContact(contact);
-        console.log(book.findByPhoneNumber("1234567890"));
-        // Получение всех контактов
-        var allContacts = contactBook.getContacts();
-        console.log(allContacts);
-        var student = {
-            id: 1,
-            fullName: "Marat",
-            age: 14,
-            courses: ["Art"],
-            gpa: 83,
-            contactInfo: {
-                email: "marat.mkfer@gmail.com",
-                phone: "05314395991"
-            },
-            address: {
-                country: "Turkey",
-                city: "Alanya",
-                postalCode: "071400"
-            }
-        };
-        var students = new FileRepository_1.FileRepository("./model/data/Student.json");
-        students.create(student);
-        students.Save();
+        if (addMockData) {
+            initializeMock(contactBook);
+        }
+        //IContactBook Testing
+        //console.log(contactBook.findByPhoneNumber("5555555555"));
+        //let temp:Contact | undefined=contactBook.findByFullName("александров");
+        //console.log(JSON.stringify(temp));
+        console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
+        console.log(JSON.stringify(contactBook.findByAgeAndCity(40, "Новосибирск")));
+        console.log(JSON.stringify(contactBook.findByEmail("alexey@example.com")));
+        console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
+        ///
     };
     Program.prototype.Configure = function (config) {
         console.log("Configuring...");
@@ -61,4 +35,71 @@ var instance = new Program(process.argv.slice(2))
     .Build("model.json")
     .Configure("config.json")
     .Run();
+function initializeMock(contactBook) {
+    // Добавляем тестовые контакты
+    contactBook.addContact({
+        id: 1,
+        name: "Алексей Александров",
+        phones: [
+            {
+                number: "5555555555",
+                type: "Mobile",
+            },
+        ],
+        emails: [
+            {
+                address: "alexey@example.com",
+                type: "Work",
+            },
+        ],
+        age: 35,
+        city: "Казань",
+    });
+    contactBook.addContact({
+        id: 4,
+        name: "Дмитрий Дмитриев",
+        phones: [
+            {
+                number: "6666666666",
+                type: "Home",
+            },
+        ],
+        emails: [
+            {
+                address: "dmitriy@example.com",
+                type: "Personal",
+            },
+        ],
+        age: 40,
+        city: "Новосибирск",
+    });
+    // Проверяем поиск по полному имени
+    var foundContact1 = contactBook.findByFullName("иван иванов");
+    console.log("Найденный контакт (иван иванов):", foundContact1); // Ожидается, что это будет объект с именем 'Иван Иванов'
+    var foundContact2 = contactBook.findByFullName("Алексей Александров");
+    console.log("Найденный контакт (Алексей Александров):", foundContact2); // Ожидается, что это будет undefined
+    /* const student: Student = {
+       id: 1,
+       fullName: "Marat",
+       age: 14,
+       courses: ["Art"],
+       gpa: 83,
+       contactInfo: {
+         email: "marat.mkfer@gmail.com",
+         phone: "05314395991",
+       },
+       address: {
+         country: "Turkey",
+         city: "Alanya",
+         postalCode: "071400",
+       },
+     };
+     const students: FileRepository<Student, number> = new FileRepository<
+       Student,
+       number
+     >("./model/data/Student.json");
+     students.create(student);
+     students.Save();
+  */
+}
 //# sourceMappingURL=program.js.map

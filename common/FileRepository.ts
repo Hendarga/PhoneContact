@@ -12,9 +12,7 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
     public readonly loadFromFile:any;
     public readonly flush:any;
     public readonly filePath: any;
-   public Save(){
-    this.flush(this.items)
-   }
+   
     constructor(filePath: string) {
         // Check if file exists
         if(!fs.existsSync(filePath)) {
@@ -33,7 +31,9 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
         
         this.items.push(...this.loadFromFile());
     }
-    
+    public Save(){
+        this.flush(this.items)
+       }
 }
 
 /// <reference path="IElementUpdate.ts" />

@@ -11,9 +11,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var Repository = /** @class */ (function () {
     function Repository(initCapacity) {
-        if (initCapacity === void 0) { initCapacity = 3; }
+        if (initCapacity === void 0) { initCapacity = 0; }
         this.items = new Array(initCapacity);
     }
+    Repository.prototype.filter = function (predicate, thisArg) {
+        return this.items.filter(predicate, thisArg);
+    };
+    Repository.prototype.find = function (predicate, thisArg) {
+        return this.items.find(predicate);
+    };
     Repository.prototype.getAll = function () {
         return this.items;
     };
@@ -21,32 +27,21 @@ var Repository = /** @class */ (function () {
         return this.items.find(function (item) { return item.id === id; });
     };
     Repository.prototype.create = function (element) {
-        if (!element) {
-            throw new Error("Cannot create undefined element");
-        }
-        if (!element.id) {
-            element.id = this.currentId++; // Генерация id, если его нет
-        }
-        var index = this.items.findIndex(function (item) { return item.id === element.id; });
-        if (index >= 0) {
+        var index = this.items.findIndex(function (item) { return item != undefined && item.id === element.id; });
+        if (index < 0)
+            index = this.items.push(element) - 1;
+        else
             throw new Error("Element with id ".concat(element.id, " already exists"));
-        }
-        this.items.push(element);
-        if (this.onElementUpdate) {
-            this.onElementUpdate.onUpdate(element, 'CREATE');
-        }
-        return this.items.length - 1; // Индекс добавленного элемента
-    };
-    Repository.prototype.read = function (selector) {
-        this.items = this.items.filter(selector.equals);
-        return this.items;
+        if (this.onElementUpdate)
+            this.onElementUpdate.onUpdate(element, "CREATE");
+        return index;
     };
     Repository.prototype.update = function (element) {
         var index = this.items.findIndex(function (item) { return item.id === element.id; });
         if (index > -1)
             this.items[index] = element;
         if (this.onElementUpdate)
-            this.onElementUpdate.onUpdate(element, 'UPDATE');
+            this.onElementUpdate.onUpdate(element, "UPDATE");
         return index;
     };
     Repository.prototype.delete = function (id) {
@@ -54,7 +49,7 @@ var Repository = /** @class */ (function () {
         if (index > -1)
             this.items.splice(index, 1);
         if (this.onElementUpdate)
-            this.onElementUpdate.onUpdate(this.items[index], 'DELETE');
+            this.onElementUpdate.onUpdate(this.items[index], "DELETE");
         return index;
     };
     return Repository;

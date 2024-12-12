@@ -6,13 +6,17 @@ import { Contact } from "./Contact";
  * Extends the generic IRepository interface with Contact type.
  * Provides methods for searching contacts based on various criteria.
  */
-export interface IContactBook extends IRepository<Contact, number> {
+export interface IContactBook  {
 
     /**
      * Adds a new contact to the contact book.
      * @param contact - The contact to add.
      */
     addContact(contact: Contact): void;
+     /*
+     
+     */
+    updateContact(contact:Contact):void;
 
     /**
      * Retrieves all contacts from the contact book.
@@ -48,4 +52,5 @@ export interface IContactBook extends IRepository<Contact, number> {
      * @returns The contact with the specified email address, or undefined if not found.
      */
     findByEmail(email: string): Contact | undefined;
+    
 }

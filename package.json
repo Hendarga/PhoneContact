@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "node.js": "^0.0.1-security",
+    "tsc": "^2.0.4",
     "typescript": "^5.7.2"
   },
   "devDependencies": {
