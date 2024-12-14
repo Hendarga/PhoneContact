@@ -7,6 +7,8 @@ import { IIdentified } from "./common/IIdentified";
 import { Student } from "./model/Student";
 import { stdin } from "process";
 import { json } from "stream/consumers";
+import { ObjectResolver } from "./common/ObjectResolver";
+import { IContactBook } from "./model/IContactBook";
 interface Person extends IIdentified<number> {
   name: string;
   age: number;
@@ -16,7 +18,7 @@ class Program {
   constructor(public args: string[]) {}
 
   public Run(): void {
-    const contactBook = new ContactBook();
+    const contactBook =  ObjectResolver.instance.resolveObject<IContactBook>(ContactBook);
     if(addMockData){
       initializeMock(contactBook);
     } 
@@ -26,8 +28,6 @@ let temp:Contact | undefined=contactBook.findByFullName("александров"
 console.log(JSON.stringify(temp));
 console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
 console.log(JSON.stringify(contactBook.findByEmail("alexey@example.com")));
-
-
 }
   
   public Configure(config: string): Program {

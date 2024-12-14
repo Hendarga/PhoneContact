@@ -24,18 +24,24 @@ var ObjectResolver = /** @class */ (function () {
         else {
             tName = constructor.name;
         }
-        switch (tName) {
+        switch (tName.trim()) {
             case "IConectionProvider": return this;
             case "ContactBook":
             case "IContactBook":
                 return new ContactBook_1.ContactBook();
+            // Define concrete implementation for FileRepository storage
+            case "FileRepository<Contact,number>":
+                return new FileRepository_1.FileRepository(this.buildConnection("contact"));
+            // Define concrete implementation for CloudFlareRepository storage
+            case "CloudFlareRepository<Contact,number>":
+                return new CloudFlareRepository_1.CloudFlareRepository(this.buildConnection("contact"));
             case "IDataSource<Contact,number>":
                 {
                     if (this.config.mode == "local") {
-                        return new FileRepository_1.FileRepository(this.buildConnection("contact"));
+                        return this.resolveObject("FileRepository<Contact,number>");
                     }
                     if (this.config.mode == "cloud") {
-                        return new CloudFlareRepository_1.CloudFlareRepository(this.buildConnection("contact"));
+                        return this.resolveObject("CloudFlareRepository<Contact,number>");
                     }
                 }
             default:
@@ -46,11 +52,16 @@ var ObjectResolver = /** @class */ (function () {
         if (this.config == undefined) {
             throw new Error("Config is undefined");
         }
-        switch (entityName) {
-            case "contact":
-                return path_1.default.resolve(this.config.conectionstring, "Contacts.json");
-            default:
-                return undefined;
+        if (this.config.mode == "cloud") {
+            return this.config.conectionstring;
+        }
+        if (this.config.mode == "local") {
+            switch (entityName) {
+                case "contact":
+                    return path_1.default.resolve(this.config.localDataDir, "Contacts.json");
+                default:
+                    return undefined;
+            }
         }
     };
     ObjectResolver.prototype.readConfig = function (filePath) {

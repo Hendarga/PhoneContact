@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContactBook_1 = require("./bll/ContactBook");
+var ObjectResolver_1 = require("./common/ObjectResolver");
 var addMockData = false;
 var Program = /** @class */ (function () {
     function Program(args) {
         this.args = args;
     }
     Program.prototype.Run = function () {
-        var contactBook = new ContactBook_1.ContactBook();
+        var contactBook = ObjectResolver_1.ObjectResolver.instance.resolveObject(ContactBook_1.ContactBook);
         if (addMockData) {
             initializeMock(contactBook);
         }

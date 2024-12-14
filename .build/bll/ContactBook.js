@@ -10,7 +10,7 @@ var ContactBook /* extends Repository<Contact, number>*/ = /** @class */ (functi
         };
         // ensure default provider is set
         ContactBook.provider = (_a = ContactBook.provider) !== null && _a !== void 0 ? _a : ObjectResolver_1.ObjectResolver.instance;
-        this.contacts = ContactBook.provider.resolveObject("");
+        this.contacts = ContactBook.provider.resolveObject("IDataSource<Contact,number>");
     }
     ContactBook.prototype.updateContact = function (contact) {
         this.contacts.update(contact);

@@ -8,6 +8,7 @@ import { ContactBook } from "../bll/ContactBook";
 import { Contact } from "../model/Contact";
 import { CloudFlareRepository } from "../CF/CloudFlareRepository";
 import { FileRepository } from "./FileRepository";
+import { IDataSource } from "./IDataSource";
 
 export class ObjectResolver implements IObjectResolver, IConnectionProvider{
     
@@ -33,18 +34,27 @@ export class ObjectResolver implements IObjectResolver, IConnectionProvider{
     {
       tName = constructor.name;
     }
-    switch (tName) {
+    switch (tName.trim()) {
         case"IConectionProvider": return this;
         case "ContactBook":
         case "IContactBook":
            return new ContactBook();
+
+        // Define concrete implementation for FileRepository storage
+        case "FileRepository<Contact,number>":
+          return new FileRepository<Contact, number>(this.buildConnection("contact"));
+
+        // Define concrete implementation for CloudFlareRepository storage
+        case "CloudFlareRepository<Contact,number>":
+          return new CloudFlareRepository<Contact, number>(this.buildConnection("contact"));
+  
         case "IDataSource<Contact,number>":
           {
             if(this.config.mode == "local"){
-              return new FileRepository<Contact, number>(this.buildConnection("contact"));
+              return this.resolveObject<IDataSource<Contact, number>>("FileRepository<Contact,number>"); 
             }
             if(this.config.mode == "cloud"){
-              return new CloudFlareRepository<Contact, number>(this.buildConnection("contact"));
+              return this.resolveObject<IDataSource<Contact, number>>("CloudFlareRepository<Contact,number>");
             }
           }
       default:
@@ -57,11 +67,17 @@ export class ObjectResolver implements IObjectResolver, IConnectionProvider{
     if(this.config==undefined){
       throw new Error("Config is undefined");
     }
-    switch (entityName) {
-    case "contact":
-      return path.resolve(this.config.conectionstring,"Contacts.json");
-    default:
-      return undefined;
+    if(this.config.mode== "cloud"){
+      return this.config.conectionstring;
+    }
+    if(this.config.mode == "local"){
+      switch (entityName) {
+        case "contact":
+          return path.resolve(this.config.localDataDir,"Contacts.json");
+        default:
+          return undefined;
+        }
+    
     }
   }
 

@@ -1,5 +1,5 @@
 {
-    "conectionstring":"./.build/data/",
-    //can be local or cloud
-    "mode":"local"
-} 
+    "localDataDir" : "./.build/data/",
+    "conectionstring":"cloud-ref",
+    "mode":"cloud"
+}

@@ -16,12 +16,14 @@ export class ContactBook /* extends Repository<Contact, number>*/ implements ICo
     // ensure default provider is set
     ContactBook.provider = ContactBook.provider?? ObjectResolver.instance;
   
-    this.contacts = ContactBook.provider.resolveObject<IDataSource<Contact,number>>("");
+    this.contacts = ContactBook.provider.resolveObject<IDataSource<Contact,number>>("IDataSource<Contact,number>");
   }
+
   updateContact(contact: Contact): void {
     this.contacts.update(contact);
     this.contacts.Save();
   }
+  
   addContact(contact: Contact): void {
     this.contacts.create(contact);
     this.contacts.Save();
