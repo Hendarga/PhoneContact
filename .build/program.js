@@ -1,25 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContactBook_1 = require("./bll/ContactBook");
+var ConectionBuilder_1 = require("./bll/ConectionBuilder");
 var addMockData = false;
 var Program = /** @class */ (function () {
     function Program(args) {
         this.args = args;
     }
     Program.prototype.Run = function () {
-        var contactBook = new ContactBook_1.ContactBook();
+        var builder = new ConectionBuilder_1.ConectionBuilder(".\\config.json");
+        var contactBook = new ContactBook_1.ContactBook(builder);
         if (addMockData) {
             initializeMock(contactBook);
         }
-        //IContactBook Testing
-        //console.log(contactBook.findByPhoneNumber("5555555555"));
-        //let temp:Contact | undefined=contactBook.findByFullName("александров");
-        //console.log(JSON.stringify(temp));
+        // IContactBook Testing
+        console.log(contactBook.findByPhoneNumber("2555555555"));
+        var temp = contactBook.findByFullName("александров");
+        console.log(JSON.stringify(temp));
         console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
-        console.log(JSON.stringify(contactBook.findByAgeAndCity(40, "Новосибирск")));
         console.log(JSON.stringify(contactBook.findByEmail("alexey@example.com")));
-        console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
-        ///
     };
     Program.prototype.Configure = function (config) {
         console.log("Configuring...");
@@ -38,11 +37,11 @@ var instance = new Program(process.argv.slice(2))
 function initializeMock(contactBook) {
     // Добавляем тестовые контакты
     contactBook.addContact({
-        id: 1,
+        id: 200,
         name: "Алексей Александров",
         phones: [
             {
-                number: "5555555555",
+                number: "2555555555",
                 type: "Mobile",
             },
         ],
@@ -56,7 +55,7 @@ function initializeMock(contactBook) {
         city: "Казань",
     });
     contactBook.addContact({
-        id: 4,
+        id: 300,
         name: "Дмитрий Дмитриев",
         phones: [
             {

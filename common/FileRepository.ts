@@ -4,8 +4,9 @@ import Repository from './Repository';
 import { IIdentified } from './IIdentified';
 import { IElementUpdate } from './IElementUpdate';
 import { ActionTypes } from './IElementUpdate';
-
-export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, K> {
+import { IDataSource } from './IDataSource';
+//TODO:Ты создаеш раширение репозиторий по принципу файл репозиторий только чтоб он работал с инфраструктурой cloudflare
+export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, K> implements IDataSource<T,K> {
     private elementUpdater: onElementUpdate<T> | undefined;
     
     /// Bind the element updater to the repository
@@ -30,6 +31,9 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
         this.flush =  this.elementUpdater.flush.bind(this.elementUpdater);
         
         this.items.push(...this.loadFromFile());
+    }
+    Load(): void {
+        this.loadFromFile();
     }
     public Save(){
         this.flush(this.items)

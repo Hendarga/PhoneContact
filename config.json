@@ -1,0 +1,5 @@
+{
+    "conectionstring":"./.build/data/",
+    //can be local or cloud
+    "mode":"local"
+} 

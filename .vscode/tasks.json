@@ -8,7 +8,8 @@
 		"dependsOn": [
 		  "tsc: build - tsconfig.json",
 		  "Clean .build/data Folder2",
-		  "Build model data folder"
+		  "Build model data folder",
+		  "Copy config file"
 		],
 		"dependsOrder": "sequence",
 		"group": {
@@ -69,6 +70,17 @@
 		  "./model/data/",
 		  
 		  "./.build/data/",
+		  "-r",
+		],
+	  },
+	  {
+		"type": "shell",
+		"label": "Copy config file",
+		"command": "cp",
+		"args": [
+		  "./config.json",
+		  
+		  "./.build",
 		  "-r",
 		],
 	  }

@@ -7,6 +7,7 @@ import { IIdentified } from "./common/IIdentified";
 import { Student } from "./model/Student";
 import { stdin } from "process";
 import { json } from "stream/consumers";
+import { ConectionBuilder } from "./bll/ConectionBuilder";
 interface Person extends IIdentified<number> {
   name: string;
   age: number;
@@ -16,17 +17,18 @@ class Program {
   constructor(public args: string[]) {}
 
   public Run(): void {
-    const contactBook = new ContactBook();
+    const builder:ConectionBuilder=new ConectionBuilder(".\\config.json");
+    const contactBook = new ContactBook(builder);
     if(addMockData){
       initializeMock(contactBook);
     } 
-/*IContactBook Testing
-console.log(contactBook.findByPhoneNumber("5555555555"));
+// IContactBook Testing
+console.log(contactBook.findByPhoneNumber("2555555555"));
 let temp:Contact | undefined=contactBook.findByFullName("александров");
 console.log(JSON.stringify(temp));
 console.log(JSON.stringify(contactBook.findByAgeAndCity(35, "Казань")));
 console.log(JSON.stringify(contactBook.findByEmail("alexey@example.com")));
-*/
+
 
 }
   
@@ -51,11 +53,11 @@ function initializeMock(contactBook:ContactBook) {
   // Добавляем тестовые контакты
   
   contactBook.addContact({
-    id: 1,
+    id: 200,
     name: "Алексей Александров",
     phones: [
       {
-        number: "5555555555",
+        number: "2555555555",
         type: "Mobile",
       },
     ],
@@ -70,7 +72,7 @@ function initializeMock(contactBook:ContactBook) {
   });
   
   contactBook.addContact({
-    id: 4,
+    id: 300,
     name: "Дмитрий Дмитриев",
     phones: [
       {

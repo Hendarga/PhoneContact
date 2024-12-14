@@ -2,12 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactBook = void 0;
 var FileRepository_1 = require("../common/FileRepository");
-var ContactBook = /** @class */ (function () {
-    function ContactBook() {
+var ContactBook /* extends Repository<Contact, number>*/ = /** @class */ (function () {
+    function ContactBook(provider) {
         this.searchSubstring = function (word, substring) {
             return word.includes(substring);
         };
-        this.contacts = new FileRepository_1.FileRepository("./.build/data/Contacts.json");
+        var cstring = provider.build("contact");
+        if (cstring == undefined) {
+            throw new RangeError("contact");
+        }
+        this.contacts = new FileRepository_1.FileRepository(cstring);
     }
     ContactBook.prototype.updateContact = function (contact) {
         this.contacts.update(contact);
@@ -28,7 +32,9 @@ var ContactBook = /** @class */ (function () {
     };
     // Поиск по полному имени
     ContactBook.prototype.findByFullName = function (name) {
-        return this.contacts.find(function (contact) { return contact.name.toLowerCase().includes(name.toLowerCase()); });
+        return this.contacts.find(function (contact) {
+            return contact.name.toLowerCase().includes(name.toLowerCase());
+        });
     };
     // Поиск по возрасту и городу
     ContactBook.prototype.findByAgeAndCity = function (age, city) {

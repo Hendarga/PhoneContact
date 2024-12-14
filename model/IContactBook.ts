@@ -14,7 +14,7 @@ export interface IContactBook  {
      */
     addContact(contact: Contact): void;
      /*
-     
+     Updates contact info
      */
     updateContact(contact:Contact):void;
 
