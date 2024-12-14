@@ -1,15 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ContactBook_1 = require("./bll/ContactBook");
-var ConectionBuilder_1 = require("./bll/ConectionBuilder");
 var addMockData = false;
 var Program = /** @class */ (function () {
     function Program(args) {
         this.args = args;
     }
     Program.prototype.Run = function () {
-        var builder = new ConectionBuilder_1.ConectionBuilder(".\\config.json");
-        var contactBook = new ContactBook_1.ContactBook(builder);
+        var contactBook = new ContactBook_1.ContactBook();
         if (addMockData) {
             initializeMock(contactBook);
         }

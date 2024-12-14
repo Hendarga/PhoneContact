@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContactBook = void 0;
-var FileRepository_1 = require("../common/FileRepository");
+var ObjectResolver_1 = require("../common/ObjectResolver");
 var ContactBook /* extends Repository<Contact, number>*/ = /** @class */ (function () {
-    function ContactBook(provider) {
+    function ContactBook() {
+        var _a;
         this.searchSubstring = function (word, substring) {
             return word.includes(substring);
         };
-        var cstring = provider.build("contact");
-        if (cstring == undefined) {
-            throw new RangeError("contact");
-        }
-        this.contacts = new FileRepository_1.FileRepository(cstring);
+        // ensure default provider is set
+        ContactBook.provider = (_a = ContactBook.provider) !== null && _a !== void 0 ? _a : ObjectResolver_1.ObjectResolver.instance;
+        this.contacts = ContactBook.provider.resolveObject("");
     }
     ContactBook.prototype.updateContact = function (contact) {
         this.contacts.update(contact);

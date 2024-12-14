@@ -11,5 +11,5 @@ export interface IConnectionProvider {
      * @param entityName The name of the entity for which to build the connection string.
      * @returns The built connection string, or undefined if the entity name is invalid.
      */
-    build(entityName: string): string | undefined;
+    buildConnection(entityName: string): string | undefined;
 }

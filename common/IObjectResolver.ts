@@ -5,5 +5,5 @@ export interface IObjectResolver{
  * @template objtype The type of object to resolve.
  * @returns An object of type `objtype`.
  */
-resolveObject<TClass extends any>(constructor: new (...args: any[]) => TClass): any | undefined
+    resolveObject<TClass extends any>(constructor:string| null | (new (...args: any[]) => TClass)): any | undefined
 }

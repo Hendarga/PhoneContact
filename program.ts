@@ -7,7 +7,6 @@ import { IIdentified } from "./common/IIdentified";
 import { Student } from "./model/Student";
 import { stdin } from "process";
 import { json } from "stream/consumers";
-import { ConectionBuilder } from "./bll/ConectionBuilder";
 interface Person extends IIdentified<number> {
   name: string;
   age: number;
@@ -17,8 +16,7 @@ class Program {
   constructor(public args: string[]) {}
 
   public Run(): void {
-    const builder:ConectionBuilder=new ConectionBuilder(".\\config.json");
-    const contactBook = new ContactBook(builder);
+    const contactBook = new ContactBook();
     if(addMockData){
       initializeMock(contactBook);
     } 

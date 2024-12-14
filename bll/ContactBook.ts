@@ -5,19 +5,18 @@ import { FileRepository } from "../common/FileRepository";
 import { IConnectionProvider } from "../common/IConectionProvider";
 import { IDataSource } from "../common/IDataSource";
 import { IObjectResolver } from "../common/IObjectResolver";
-import { ObjectResolver, resolveInstance } from "../common/ObjectResolver";
+import { ObjectResolver } from "../common/ObjectResolver";
 
 export class ContactBook /* extends Repository<Contact, number>*/ implements IContactBook
 {
+  public static provider: IObjectResolver;
   contacts: IDataSource<Contact, number>;
-  provider:IObjectResolver=new ObjectResolver();
+  
   constructor() {
-    this.contacts = resolveInstance(IDataSource<Contact,number>)
-   /* const cstring: string | undefined = provider.build("contact");
-    if (cstring == undefined) {
-      throw new RangeError("contact");
-    }
-    this.contacts = new FileRepository<Contact, number>(cstring); */
+    // ensure default provider is set
+    ContactBook.provider = ContactBook.provider?? ObjectResolver.instance;
+  
+    this.contacts = ContactBook.provider.resolveObject<IDataSource<Contact,number>>("");
   }
   updateContact(contact: Contact): void {
     this.contacts.update(contact);

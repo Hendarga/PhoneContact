@@ -21,11 +21,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileRepository = void 0;
 var fs_1 = __importDefault(require("fs"));
 var Repository_1 = __importDefault(require("./Repository"));
+//TODO:Ты создаеш раширение репозиторий по принципу файл репозиторий только чтоб он работал с инфраструктурой cloudflare
 var FileRepository = /** @class */ (function (_super) {
     __extends(FileRepository, _super);
     function FileRepository(filePath) {
         var _a;
         var _this = this;
+        // Check if filepath valus is defined
+        if (filePath == undefined) {
+            throw new Error('File path is not defined');
+        }
         // Check if file exists
         if (!fs_1.default.existsSync(filePath)) {
             fs_1.default.writeFileSync(filePath, '[]', 'utf-8');
@@ -42,6 +47,9 @@ var FileRepository = /** @class */ (function (_super) {
         (_a = _this.items).push.apply(_a, _this.loadFromFile());
         return _this;
     }
+    FileRepository.prototype.Load = function () {
+        this.loadFromFile();
+    };
     FileRepository.prototype.Save = function () {
         this.flush(this.items);
     };

@@ -14,7 +14,11 @@ export class FileRepository<T extends IIdentified<K>, K>  extends Repository<T, 
     public readonly flush:any;
     public readonly filePath: any;
    
-    constructor(filePath: string) {
+    constructor(filePath: string| undefined) {
+        // Check if filepath valus is defined
+        if (filePath == undefined) {
+            throw new Error('File path is not defined');
+        }
         // Check if file exists
         if(!fs.existsSync(filePath)) {
             fs.writeFileSync(filePath, '[]', 'utf-8');

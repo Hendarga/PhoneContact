@@ -1,3 +1,5 @@
 {
-    "conectionstring":"./.build/data/Contacts.json"
-}
+    "conectionstring":"./.build/data/",
+    //can be local or cloud
+    "mode":"local"
+} 
